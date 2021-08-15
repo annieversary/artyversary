@@ -53,20 +53,22 @@ const fn bg_color(i: i32, j: i32) -> Rgb<u8> {
 fn view(app: &App, _model: &Model, frame: Frame) {
     let draw = app.draw();
 
+    let t = frame.nth() as f32 / 60.0;
+
     draw.background().color(BG);
 
     for i in -4..=4 {
         for j in -4..=4 {
             let speed = map_range((i + j).abs() as f32, 0.0, 8.0, 0.1, 2.0);
-            let dis = (app.time * speed).sin() * 10.0;
+            let dis = (t * speed).sin() * 10.0;
 
             let circ_offset = vec2(
-                (app.time + (i * i) as f32).sin() * dis,
-                (app.time + (j * i) as f32).cos() * dis,
+                (t + (i * i) as f32).sin() * dis,
+                (t + (j * i) as f32).cos() * dis,
             );
 
-            let x = i as f32 * 100.0 * (app.time * 0.7).sin();
-            let y = j as f32 * 100.0 * (app.time * 0.7).cos();
+            let x = i as f32 * 100.0 * (t * 0.7).sin();
+            let y = j as f32 * 100.0 * (t * 0.7).cos();
 
             draw.ellipse()
                 .w_h(40.0, 40.0)
@@ -80,4 +82,33 @@ fn view(app: &App, _model: &Model, frame: Frame) {
     }
 
     draw.to_frame(app, &frame).unwrap();
+
+    record(app, &frame);
+}
+
+use once_cell::sync::Lazy;
+static RECORDING: Lazy<bool> = Lazy::new(|| {
+    let args: Vec<String> = std::env::args().collect();
+    args.len() > 1 && args[1] == "-record"
+});
+
+fn record(app: &App, frame: &Frame) {
+    if !*RECORDING {
+        return;
+    }
+
+    // save frame
+    let path = app
+        .project_path()
+        .expect("failed to locate `project_path`")
+        // Capture all frames to a directory called `/<path_to_nannou>/nannou/simple_capture`.
+        .join("recordings")
+        .join(app.exe_name().unwrap())
+        // Name each file after the number of the frame.
+        .join(format!("{:03}", frame.nth()))
+        // The extension will be PNG. We also support tiff, bmp, gif, jpeg, webp and some others.
+        .with_extension("png");
+
+    println!("frame: {} {:.3}", frame.nth(), frame.nth() as f32 / 60.0);
+    app.main_window().capture_frame(path);
 }
