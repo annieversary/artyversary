@@ -170,13 +170,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
 
 [[package]]
-name = "circle"
-version = "0.1.0"
-dependencies = [
- "nannou",
-]
-
-[[package]]
 name = "clipboard-win"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2300,6 +2293,13 @@ checksum = "917e8ec7f535cd1a6cbf749c8866c24d67c548a80ac48c8e88a182eab5c07bd1"
 dependencies = [
  "nix 0.14.1",
  "smithay-client-toolkit 0.6.6",
+]
+
+[[package]]
+name = "spircles"
+version = "0.1.0"
+dependencies = [
+ "nannou",
 ]
 
 [[package]]
