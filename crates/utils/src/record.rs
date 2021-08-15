@@ -1,5 +1,6 @@
 use nannou::prelude::*;
 use once_cell::sync::Lazy;
+
 static RECORDING: Lazy<bool> = Lazy::new(|| {
     let args: Vec<String> = std::env::args().collect();
     args.len() > 1 && args[1] == "-record"

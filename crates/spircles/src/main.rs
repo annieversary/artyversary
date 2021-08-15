@@ -1,5 +1,6 @@
 use nannou::prelude::*;
 
+use utils::color::color;
 use utils::record::record;
 
 fn main() {
@@ -13,15 +14,6 @@ fn model(_app: &App) -> Model {
 }
 
 fn update(_app: &App, _model: &mut Model, _update: Update) {}
-
-const fn color(red: u8, green: u8, blue: u8) -> Rgb<u8> {
-    Rgb {
-        red,
-        green,
-        blue,
-        standard: std::marker::PhantomData::<nannou::color::encoding::Srgb>,
-    }
-}
 
 const BG: Rgb<u8> = color(0, 5, 5);
 const BALL: Rgb<u8> = color(255, 255, 255);
