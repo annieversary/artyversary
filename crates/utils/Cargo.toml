@@ -1,8 +1,8 @@
 [package]
-name = "spircles"
+name = "utils"
 version = "0.1.0"
 edition = "2018"
 
 [dependencies]
 nannou = "0.17"
-utils = { path = "../utils" }
+once_cell = "1.8.0"
