@@ -1,7 +1,6 @@
 use nannou::prelude::*;
 
 use utils::color::color;
-use utils::record::record;
 
 fn main() {
     nannou::app(model).update(update).simple_window(view).run();
@@ -77,5 +76,5 @@ fn view(app: &App, _model: &Model, frame: Frame) {
 
     draw.to_frame(app, &frame).unwrap();
 
-    record(app, &frame);
+    utils::record::record(app, &frame);
 }
