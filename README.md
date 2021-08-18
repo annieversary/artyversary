@@ -2,9 +2,8 @@
 
 this is a bunch of nannou projects
 
-## list
+i'll add a list with pictures here soon
 
-- subtitled #1: some spinning circles
-- subtitled #2: idk spinning colors or something
-- subtitled #3: small flashing circles
-- subtitled #4: more spinning circles wow what a surprise
+you'll notice that the numbers i've put on fedi and the ones here are different :)
+
+also don't criticize my code pls i'm sensitive and i Will cry
