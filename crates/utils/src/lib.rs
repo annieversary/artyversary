@@ -7,6 +7,10 @@ use nannou::prelude::*;
 pub fn map_sin(v: f32, out_min: f32, out_max: f32) -> f32 {
     map_range(v.sin(), -1.0, 1.0, out_min, out_max)
 }
+/// Maps the cosine of v to (out_min, out_max)
+pub fn map_cos(v: f32, out_min: f32, out_max: f32) -> f32 {
+    map_range(v.cos(), -1.0, 1.0, out_min, out_max)
+}
 
 pub trait Vec2Extension {
     fn atan2(self) -> f32;

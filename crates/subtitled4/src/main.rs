@@ -3,24 +3,38 @@ use nannou::{color::Mix, prelude::*};
 use utils::*;
 
 fn main() {
-    nannou::app(model).update(update).simple_window(view).run();
+    nannou::app(model)
+        .size(800, 600)
+        .update(update)
+        .simple_window(view)
+        .run();
 }
 
 struct Model {
-    points: Vec<Vec2>,
+    points: Vec<Point>,
+    bg_color: Color,
+    fg_color: Color,
+}
+type Color = rgb::Rgb<nannou::color::encoding::Linear<nannou::color::encoding::Srgb>>;
+struct Point {
+    pos: Vec2,
 }
 
-fn model(_app: &App) -> Model {
-    let r = 300.0;
+const GOLDEN: f32 = 0.618033988;
 
+fn model(_app: &App) -> Model {
     Model {
+        bg_color: srgb(1.0f32, 250.0 / 255.0, 250.0 / 255.0).into_linear(),
+        fg_color: srgb(189.0 / 255.0, 178.0 / 255.0, 1.0).into_linear(),
+
         points: (0..100)
-            .map(|_| {
-                let r = r * random::<f32>().sqrt();
-                let theta = random::<f32>() * TAU;
+            .map(|i| {
+                let theta = i as f32 * TAU * GOLDEN;
+                let r = theta.sqrt();
                 let x = r * theta.cos();
                 let y = r * theta.sin();
-                vec2(x, y)
+                let pos = vec2(x, y) * 15.0;
+                Point { pos }
             })
             .collect(),
     }
@@ -28,7 +42,7 @@ fn model(_app: &App) -> Model {
 
 fn update(_app: &App, model: &mut Model, _update: Update) {
     for p in &mut model.points {
-        *p += vec2(p.y, -p.x) * 0.01;
+        p.pos += vec2(p.pos.y, -p.pos.x).normalize() * 19.0;
     }
 }
 
@@ -36,24 +50,19 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let t = frame.nth() as f32 / 60.0;
 
     let draw = app.draw();
-    let bg_color = srgb(1.0f32, 250.0 / 255.0, 250.0 / 255.0);
-    let fg_color = srgb(189.0 / 255.0, 178.0 / 255.0, 1.0);
 
-    if frame.nth() == 1 {
-        draw.background().color(bg_color);
-    } else {
-        let win = app.window_rect();
-        draw.rect()
-            .wh(win.wh())
-            .color(srgba(1., 250.0 / 255.0, 250.0 / 255.0, 0.001));
+    if frame.nth() == 0 {
+        draw.background().color(model.bg_color);
     }
 
     for p in &model.points {
-        let m = map_sin(t * 1.2 + p.length() / 100.0, 0.0, 1.0).powi(3);
+        let m = map_sin(t * 0.3 + p.pos.length(), 0.0, 1.0).powi(3);
 
-        let color = fg_color.into_linear().mix(&bg_color.into_linear(), m);
-        draw.ellipse().xy(*p).radius(10.0).color(color);
+        let color: Color = model.fg_color.mix(&model.bg_color, m);
+        draw.ellipse().xy(p.pos).radius(10.0).color(color);
     }
 
     draw.to_frame(app, &frame).unwrap();
+
+    utils::record::record(app, &frame);
 }
