@@ -18,6 +18,7 @@ pub fn record(app: &App, frame: &Frame) {
         // Capture all frames to a directory called `/<path_to_nannou>/nannou/simple_capture`.
         .join("recordings")
         .join(app.exe_name().unwrap())
+        .join("frames")
         // Name each file after the number of the frame.
         .join(format!("{:03}", frame.nth()))
         // The extension will be PNG. We also support tiff, bmp, gif, jpeg, webp and some others.
