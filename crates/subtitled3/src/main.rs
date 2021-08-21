@@ -34,7 +34,7 @@ fn view(app: &App, _model: &Model, frame: Frame) {
 
     let draw = app.draw();
 
-    if frame.nth() == 1 {
+    if frame.nth() == 0 {
         draw.background().color(BG);
     } else {
         let win = app.window_rect();
