@@ -14,9 +14,21 @@ pub fn map_cos(v: f32, out_min: f32, out_max: f32) -> f32 {
 
 pub trait Vec2Extension {
     fn atan2(self) -> f32;
+    fn yy(self) -> Self;
+    fn yx(self) -> Self;
+    fn xx(self) -> Self;
 }
 impl Vec2Extension for Vec2 {
     fn atan2(self) -> f32 {
         self.x.atan2(self.y)
+    }
+    fn yy(self) -> Self {
+        vec2(self.y, self.y)
+    }
+    fn yx(self) -> Self {
+        vec2(self.y, self.x)
+    }
+    fn xx(self) -> Self {
+        vec2(self.x, self.x)
     }
 }
