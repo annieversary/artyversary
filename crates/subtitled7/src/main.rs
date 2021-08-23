@@ -1,4 +1,4 @@
-use nannou::{color::Mix, prelude::*};
+use nannou::prelude::*;
 use std::collections::VecDeque;
 use utils::*;
 
@@ -7,7 +7,7 @@ fn main() {
 }
 
 struct Model {
-    points: VecDeque<Vec2>,
+    points: VecDeque<(Vec2, (f32, f32))>,
 }
 
 const GOLDEN: f32 = 0.618033988;
@@ -20,9 +20,16 @@ fn point(i: usize) -> Vec2 {
     vec2(x, y)
 }
 
+fn color() -> (f32, f32) {
+    (
+        random_range(345.0, 355.0) / 360.0,
+        random_range(75.0, 93.0) / 100.0,
+    )
+}
+
 fn model(_app: &App) -> Model {
     Model {
-        points: (0..2000).map(point).map(|a| a * 10.0).collect(),
+        points: (0..2000).map(point).map(|a| (a * 10.0, color())).collect(),
     }
 }
 
@@ -96,13 +103,15 @@ fn norm_f(p: Vec2, t: f32) -> Vec2 {
 
 fn update(app: &App, model: &mut Model, _update: Update) {
     let t = app.elapsed_frames() as f32 / 120.0;
-    for p in &mut model.points {
+    for (p, _) in &mut model.points {
         *p -= norm_f(*p, t) * f(*p, t).signum();
     }
 
     if app.elapsed_frames() > 20 {
         for _ in 0..10 {
-            model.points.push_back(6.0 * point(random_range(0, 1000)));
+            model
+                .points
+                .push_back((6.0 * point(random_range(0, 1000)), color()));
         }
     }
 
@@ -112,7 +121,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
         // drain_filter but i'm too lazy for nightly
         let mut i = 0;
         while i < model.points.len() {
-            if f(model.points[i], t) < 0.0 {
+            if f(model.points[i].0, t) < 0.0 {
                 model.points.remove(i);
             } else {
                 i += 1;
@@ -122,21 +131,18 @@ fn update(app: &App, model: &mut Model, _update: Update) {
 }
 
 fn view(app: &App, model: &Model, frame: Frame) {
-    let t = frame.nth() as f32 / 120.0;
+    let _t = frame.nth() as f32 / 120.0;
 
     let draw = app.draw();
     if frame.nth() == 0 {
-        draw.background()
-            .color(srgb(1., 250.0 / 255.0, 250.0 / 255.0));
+        draw.background().color(BLACK);
     } else {
         let win = app.window_rect();
-        draw.rect()
-            .wh(win.wh())
-            .color(srgba(1., 250.0 / 255.0, 250.0 / 255.0, 0.005));
+        draw.rect().wh(win.wh()).color(srgba(0., 0.0, 0.0, 0.005));
     }
 
-    for &p in &model.points {
-        draw.ellipse().color(BLACK).xy(p).radius(1.0);
+    for &(p, (h, l)) in &model.points {
+        draw.ellipse().color(hsl(h, 1.0, l)).xy(p).radius(1.0);
     }
 
     draw.to_frame(app, &frame).unwrap();
