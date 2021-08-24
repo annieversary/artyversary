@@ -2397,6 +2397,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "subtitled8"
+version = "0.1.0"
+dependencies = [
+ "nannou",
+ "utils",
+]
+
+[[package]]
 name = "syn"
 version = "1.0.74"
 source = "registry+https://github.com/rust-lang/crates.io-index"

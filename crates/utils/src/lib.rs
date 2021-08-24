@@ -1,5 +1,6 @@
 pub mod color;
 pub mod record;
+pub mod sequences;
 
 use nannou::prelude::*;
 
@@ -30,5 +31,13 @@ impl Vec2Extension for Vec2 {
     }
     fn xx(self) -> Self {
         vec2(self.x, self.x)
+    }
+}
+pub trait Tup2Extension {
+    fn to_vec2(self) -> Vec2;
+}
+impl Tup2Extension for (f32, f32) {
+    fn to_vec2(self) -> Vec2 {
+        self.into()
     }
 }
