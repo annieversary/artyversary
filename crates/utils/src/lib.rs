@@ -1,4 +1,5 @@
 pub mod color;
+pub mod drawing;
 pub mod record;
 pub mod sequences;
 

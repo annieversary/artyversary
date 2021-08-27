@@ -63,8 +63,8 @@ fn view(app: &App, _model: &Model, frame: Frame) {
         }
     }
 
-    // draw exteriors
-    draw_exterior(&draw);
+    // draw exterior
+    drawing::draw_exterior(&draw, 200.0, SNOW);
 
     // outer draw
     for i in 0..50 {
@@ -79,39 +79,4 @@ fn view(app: &App, _model: &Model, frame: Frame) {
 
     draw.to_frame(app, &frame).unwrap();
     utils::record::record(app, &frame);
-}
-
-fn draw_exterior(draw: &Draw) {
-    draw.quad()
-        .points(
-            vec2(200.0, -1000.0),
-            vec2(200.0, 1000.0),
-            vec2(1000.0, 1000.0),
-            vec2(1000.0, -1000.0),
-        )
-        .color(SNOW);
-    draw.quad()
-        .points(
-            vec2(-200.0, -1000.0),
-            vec2(-200.0, 1000.0),
-            vec2(-1000.0, 1000.0),
-            vec2(-1000.0, -1000.0),
-        )
-        .color(SNOW);
-    draw.quad()
-        .points(
-            vec2(-1000.0, 200.0),
-            vec2(-1000.0, 1000.0),
-            vec2(1000.0, 1000.0),
-            vec2(1000.0, 200.0),
-        )
-        .color(SNOW);
-    draw.quad()
-        .points(
-            vec2(-1000.0, -200.0),
-            vec2(-1000.0, -1000.0),
-            vec2(1000.0, -1000.0),
-            vec2(1000.0, -200.0),
-        )
-        .color(SNOW);
 }
