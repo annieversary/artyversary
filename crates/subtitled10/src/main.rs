@@ -6,6 +6,22 @@ fn main() {
 }
 
 // http://paulbourke.net/fractals/clifford/
+// http://paulbourke.net/fractals/peterdejong/
+
+#[derive(Clone, Copy, Debug)]
+enum Attractor {
+    Clifford,
+    DeJong,
+}
+
+impl Attractor {
+    fn random() -> Self {
+        match random_range(0, 2) {
+            0 => Self::Clifford,
+            _ => Self::DeJong,
+        }
+    }
+}
 
 #[derive(Clone, Copy, Debug)]
 struct Params {
@@ -13,6 +29,7 @@ struct Params {
     b: f32,
     c: f32,
     d: f32,
+    attractor: Attractor,
 }
 struct Model {
     points: Vec<Vec2>,
@@ -50,6 +67,7 @@ fn model(_app: &App) -> Model {
             b: 0.0,
             c: 0.0,
             d: 0.0,
+            attractor: Attractor::random(),
         },
 
         a_mul: random_range(0.3, 1.0) * random_range(-1.0, 1.0).signum(),
@@ -74,17 +92,38 @@ fn model(_app: &App) -> Model {
         max_d: f32::acos(1.4 / 2.0),
 
         base_hue: random_range(0., 360.0),
-        points: vec![Vec2::ZERO; 10000],
+        points: vec![Vec2::splat(0.1); 10000],
     }
 }
 
-fn advance(params: Params, point: Vec2) -> Vec2 {
+fn advance(
+    Params {
+        a,
+        b,
+        c,
+        d,
+        attractor,
+    }: Params,
+    point: Vec2,
+) -> Vec2 {
+    let x = point.x;
+    let y = point.y;
+
+    // clifford attractor
     // xn+1 = sin(a yn) + c cos(a xn)
     // yn+1 = sin(b xn) + d cos(b yn)
-    vec2(
-        (params.a * point.y).sin() + (params.a * point.x).cos() * params.c,
-        (params.b * point.x).sin() + (params.b * point.y).cos() * params.d,
-    )
+
+    // de Jong
+    // xn+1 = sin(a yn) - cos(b xn)
+    // yn+1 = sin(c xn) - cos(d yn)
+
+    match attractor {
+        Attractor::Clifford => vec2(
+            (a * y).sin() + (a * x).cos() * c,
+            (b * x).sin() + (b * y).cos() * d,
+        ),
+        Attractor::DeJong => vec2((a * y).sin() - (b * x).cos(), (c * x).sin() - (d * y).cos()),
+    }
 }
 
 fn update(app: &App, model: &mut Model, _update: Update) {
@@ -120,7 +159,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
     }
 
     for &p in &model.points {
-        let h = random_range(model.base_hue, model.base_hue + 120.0) / 360.0;
+        let h = random_range(model.base_hue, model.base_hue + 60.0) / 360.0;
         draw.ellipse()
             .radius(0.2)
             .xy(150.0 * p)
