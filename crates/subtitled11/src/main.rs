@@ -109,16 +109,20 @@ fn view(app: &App, model: &Model, frame: Frame) {
             // rotate
             let v = rot(t) * v;
             // project onto xz plane cause it's the coolest one
-            100.0 * vec2(v.x, v.z)
+            50.0 * vec2(v.x + v.y, v.z + v.w)
         })
         .collect::<Vec<_>>();
-    // make all pairs of points
-    let p = p
+
+    for (i, (&a, &b)) in p
         .iter()
         .enumerate()
-        .flat_map(|(i, a)| p[i + 1..].iter().map(move |b| (a, b)));
-    for (&a, &b) in p {
-        draw.line().points(a, b).color(BLACK);
+        // make all pairs of points
+        .flat_map(|(i, a)| p[i + 1..].iter().map(move |b| (a, b)))
+        .enumerate()
+    {
+        if i % 2 != 0 {
+            draw.line().points(a, b).color(BLACK);
+        }
     }
 
     draw.to_frame(app, &frame).unwrap();
