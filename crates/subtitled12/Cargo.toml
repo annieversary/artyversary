@@ -1,0 +1,9 @@
+[package]
+name = "subtitled12"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+nannou = "0.17"
+rand_distr = "0.4.1"
+utils = { path = "../utils" }
