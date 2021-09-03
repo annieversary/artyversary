@@ -42,3 +42,7 @@ impl Tup2Extension for (f32, f32) {
         self.into()
     }
 }
+
+pub fn vec2_range(min: f32, max: f32) -> Vec2 {
+    vec2(random_range(min, max), random_range(min, max))
+}
