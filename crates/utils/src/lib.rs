@@ -46,3 +46,6 @@ impl Tup2Extension for (f32, f32) {
 pub fn vec2_range(min: f32, max: f32) -> Vec2 {
     vec2(random_range(min, max), random_range(min, max))
 }
+pub fn ivec2_range(min: i32, max: i32) -> IVec2 {
+    ivec2(random_range(min, max), random_range(min, max))
+}
