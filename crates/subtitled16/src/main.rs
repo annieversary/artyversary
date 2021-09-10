@@ -2,6 +2,8 @@ use std::time::Duration;
 
 use nannou::prelude::*;
 
+// https://sighack.com/post/flood-fill-art-using-random-walks
+
 const R: f32 = 2.0;
 
 fn main() {
@@ -46,7 +48,7 @@ fn model(_app: &App) -> Model {
 }
 
 fn update(app: &App, model: &mut Model, _update: Update) {
-    for _ in 0..20 {
+    for _ in 0..50 {
         run(app, model)
     }
 }
@@ -100,8 +102,10 @@ fn view(app: &App, model: &Model, frame: Frame) {
             .color(hsl(h.fract(), 0.5, 0.5));
     }
 
-    // cause otherwise it goes too fast when recording and it can't save the frames in time lmao
-    std::thread::sleep(Duration::from_millis(5));
+    if frame.nth() < 50 {
+        // cause otherwise it goes too fast when recording and it can't save the frames in time lmao
+        std::thread::sleep(Duration::from_millis(5));
+    }
 
     draw.to_frame(app, &frame).unwrap();
     utils::record::record(app, &frame);
