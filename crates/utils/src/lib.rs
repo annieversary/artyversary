@@ -1,4 +1,5 @@
 pub mod color;
+pub mod curves;
 pub mod drawing;
 pub mod record;
 pub mod sequences;
@@ -48,4 +49,8 @@ pub fn vec2_range(min: f32, max: f32) -> Vec2 {
 }
 pub fn ivec2_range(min: i32, max: i32) -> IVec2 {
     ivec2(random_range(min, max), random_range(min, max))
+}
+/// returns a random vector in the unit circle
+pub fn vec2_circ() -> Vec2 {
+    random_range(0., TAU).sin_cos().into()
 }
