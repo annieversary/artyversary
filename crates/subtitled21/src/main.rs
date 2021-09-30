@@ -1,7 +1,4 @@
 use nannou::prelude::*;
-// use utils::*;
-
-// from https://fabiensanglard.net/doom_fire_psx/
 
 fn main() {
     nannou::app(model)
@@ -28,14 +25,10 @@ fn shader(i: usize, j: usize, w: usize, h: usize, t: f32) -> Rgb {
     let y = j as f32 / h as f32;
     let pos = vec2(x, y);
 
-    // srgb(pos.x, pos.y, 0.0)
-
-    // let a = (pos - vec2(0.5, 0.5)).length();
-    // srgb(a, a, a)
-
     creation(pos, t)
 }
 
+// https://www.shadertoy.com/view/XsXXDn
 fn creation(pos: Vec2, t: f32) -> Rgb {
     let mut l = t;
     let mut z = t;
