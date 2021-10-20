@@ -2471,6 +2471,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "subtitled22"
+version = "0.1.0"
+dependencies = [
+ "nannou",
+ "utils",
+]
+
+[[package]]
+name = "subtitled23"
+version = "0.1.0"
+dependencies = [
+ "nannou",
+ "utils",
+]
+
+[[package]]
+name = "subtitled24"
+version = "0.1.0"
+dependencies = [
+ "nannou",
+ "utils",
+]
+
+[[package]]
 name = "subtitled3"
 version = "0.1.0"
 dependencies = [

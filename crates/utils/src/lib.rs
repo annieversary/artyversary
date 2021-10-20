@@ -1,8 +1,10 @@
 pub mod color;
 pub mod curves;
 pub mod drawing;
+pub mod lsystems;
 pub mod record;
 pub mod sequences;
+pub mod turtle;
 
 use nannou::prelude::*;
 
