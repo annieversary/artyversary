@@ -20,9 +20,10 @@ fn model(_app: &App) -> Model {
 fn advance(point: Vec2, t: f32) -> Vec2 {
     // pick a random point
     let count = ((t * 0.125).trunc() as usize % 5) + 3;
-    let points = (0..count)
+    let mut points = (0..count)
         .map(|i| (TAU * i as f32 / count as f32).sin_cos().to_vec2())
         .collect::<Vec<_>>();
+    points.push(Vec2::ZERO);
 
     let random = points[random_range(0, count)];
 
