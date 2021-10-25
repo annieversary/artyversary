@@ -4,6 +4,7 @@ pub mod drawing;
 pub mod lsystems;
 pub mod record;
 pub mod sequences;
+pub mod shaders;
 pub mod turtle;
 
 use nannou::prelude::*;
